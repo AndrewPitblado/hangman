@@ -14,7 +14,7 @@ This project implements a distributed Hangman game with a React front-end and Py
 -   **Communication:**  WebSockets for real-time bidirectional communication
 
 ## Project Structure
-
+<pre>
 hangman/
 ├── client/                       # React frontend
 │   ├── src/                      # React source code
@@ -34,7 +34,7 @@ hangman/
 │   ├── word_dictionary.py        # Word selection functionality
 │   ├── socket_handlers.py        # WebSocket event handlers
 │   └── requirements.txt          # Server dependencies
-
+</pre>
 ## Getting Started
 
 ### Prerequisites
@@ -46,20 +46,25 @@ hangman/
 ## Setup Instructions
 
 - **Clone the repository**
+```bash
 git clone [repository-url]
 cd hangman
-
+```
 - **Set up the Python backend**
 In the terminal enter the following:
+```bash
 cd server
 python -m venv venv
 source venv/bin/activate 
  **On Windows use**: venv\Scripts\activate
 pip install -r requirements.txt
+```
 
 - **Set up the React frontend**
+```bash
 cd ../client
 npm install
+```
 
 
 
