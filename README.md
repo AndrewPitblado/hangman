@@ -83,36 +83,19 @@ npm run dev
 # Contributing
 
 **Create a feature branch**
-- (`git checkout -b feature/amazing-feature`)
+```bash
+git checkout -b feature/amazing-feature
+```
 
 **Commit your changes**
-- (git commit -m 'Add some amazing feature')
+```bash
+git commit -m 'Add some amazing feature'
+```
 
 **Push to the branch**
-- (git push origin feature/amazing-feature)
-
-
-## Open a file
-
-You can open a file from **Google Drive**, **Dropbox** or **GitHub** by opening the **Synchronize** sub-menu and clicking **Open from**. Once opened in the workspace, any modification in the file will be automatically synced.
-
-## Save a file
-
-You can save any file of the workspace to **Google Drive**, **Dropbox** or **GitHub** by opening the **Synchronize** sub-menu and clicking **Save on**. Even if a file in the workspace is already synced, you can save it to another location. StackEdit can sync one file with multiple locations and accounts.
-
-
-
-
-## Publish a File
-
-You can publish your file by opening the **Publish** sub-menu and by clicking **Publish to**. For some locations, you can choose between the following formats:
-
-- Markdown: publish the Markdown text on a website that can interpret it (**GitHub** for instance),
-- HTML: publish the file converted to HTML via a Handlebars template (on a blog for example).
-
-
-
-
+```bash
+git push origin feature/amazing-feature
+```
 
 ## WebSocket Events
 
