@@ -1,42 +1,99 @@
-#root {
-  max-width: 1280px;
+.App {
+  max-width: 800px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.hangman-display {
+  margin: 20px 0;
+}
+
+.hangman-display pre {
+  font-family: monospace;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.word-display {
+  margin: 20px 0;
+  font-size: 24px;
+  letter-spacing: 5px;
+}
+
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.keyboard button {
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.keyboard button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.keyboard button.guessed {
+  background-color: #ccc;
+}
+
+.game-over {
+  margin-top: 20px;
+}
+
+.game-over button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.hangman-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.hangman-stand {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.attempts-counter {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Animation for the parts */
+.hangman-stand line, .hangman-stand circle {
+  transition: all 0.3s ease-in;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Make it responsive */
+@media (max-width: 576px) {
+  .hangman-stand {
+    width: 150px;
+    height: 200px;
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
