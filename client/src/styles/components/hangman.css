@@ -1,0 +1,32 @@
+.hangman-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .hangman-stand {
+    background-color: var(--hangman-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+  }
+  
+  .hangman-display pre {
+    font-family: monospace;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  
+  .attempts-counter {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-color);
+    text-align: center;
+  }
+  
+  /* Animation for the parts */
+  .hangman-stand line, .hangman-stand circle {
+    transition: all 0.3s ease-in;
+  }

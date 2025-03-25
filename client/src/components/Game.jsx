@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Hangman from './Hangman';
 import WordDisplay from './WordDisplay';
 import Keyboard from './Keyboard';
+import GameOverModal from './GameOverModal';
 
 function Game() {
   // Game state
@@ -77,12 +78,12 @@ function Game() {
         disabled={gameState.gameOver}
       />
       
-      {gameState.gameOver && (
-        <div className="game-over">
-          <h2>{gameState.won ? 'You Won!' : 'Game Over'}</h2>
-          <button onClick={startNewGame}>Play Again</button>
-        </div>
-      )}
+      <GameOverModal
+      isWon={gameState.won}
+      word={gameState.word}
+      onPlayAgain={startNewGame}
+      isVisible={gameState.gameOver}
+      />
     </div>
   );
 }
