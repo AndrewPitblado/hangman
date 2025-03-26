@@ -33,11 +33,22 @@ function Game() {
       newAttemptsLeft -= 1;
     }
     
+    // Update displayWord with the guessed letter if it's correct
+    const newDisplayWord = gameState.word
+      .split('')
+      .map(char => newGuessedLetters.includes(char) ? char : '_')
+      .join(' ');
+    
+    // Check if game is won
+    const isWon = newDisplayWord.replace(/\s/g, '') === gameState.word;
+    
     setGameState({
       ...gameState,
+      displayWord: newDisplayWord,
       guessedLetters: newGuessedLetters,
       attemptsLeft: newAttemptsLeft,
-      gameOver: newAttemptsLeft <= 0
+      gameOver: newAttemptsLeft <= 0 || isWon,
+      won: isWon
     });
   };
 
