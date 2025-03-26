@@ -33,22 +33,19 @@ function Game() {
       newAttemptsLeft -= 1;
     }
     
-    // Update displayWord with the guessed letter if it's correct
-    const newDisplayWord = gameState.word
-      .split('')
-      .map(char => newGuessedLetters.includes(char) ? char : '_')
-      .join(' ');
-    
-    // Check if game is won
-    const isWon = newDisplayWord.replace(/\s/g, '') === gameState.word;
+    // Check for win condition - placeholder logic
+    let wordGuessed = false;
+    if (gameState.word) {
+      wordGuessed = [...gameState.word].every(letter => newGuessedLetters.includes(letter));
+    }
     
     setGameState({
       ...gameState,
       displayWord: newDisplayWord,
       guessedLetters: newGuessedLetters,
       attemptsLeft: newAttemptsLeft,
-      gameOver: newAttemptsLeft <= 0 || isWon,
-      won: isWon
+      gameOver: newAttemptsLeft <= 0 || wordGuessed,
+      won: wordGuessed
     });
   };
 
@@ -90,10 +87,10 @@ function Game() {
       />
       
       <GameOverModal
-      isWon={gameState.won}
-      word={gameState.word}
-      onPlayAgain={startNewGame}
-      isVisible={gameState.gameOver}
+        isWon={gameState.won}
+        word={gameState.word}
+        onPlayAgain={startNewGame}
+        isVisible={gameState.gameOver}
       />
     </div>
   );
