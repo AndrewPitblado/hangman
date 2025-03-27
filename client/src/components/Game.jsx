@@ -38,7 +38,12 @@ function Game() {
     if (gameState.word) {
       wordGuessed = [...gameState.word].every(letter => newGuessedLetters.includes(letter));
     }
-    
+    // Calculate the new display word
+    const newDisplayWord = gameState.word
+      .split('')
+      .map(letter => newGuessedLetters.includes(letter) ? letter : '_')
+      .join(' ');
+      
     setGameState({
       ...gameState,
       displayWord: newDisplayWord,
