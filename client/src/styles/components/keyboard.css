@@ -1,3 +1,21 @@
+@keyframes letterPress {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+@keyframes correctGuess {
+  0% { background-color: var(--keyboard-bg); }
+  50% { background-color: #4caf50; }
+  100% { background-color: var(--keyboard-bg); opacity: 0.6; }
+}
+
+@keyframes wrongGuess {
+  0% { background-color: var(--keyboard-bg); }
+  50% { background-color: #f44336; }
+  100% { background-color: var(--keyboard-bg); opacity: 0.6; }
+}
+
 .keyboard {
     display: flex;
     flex-wrap: wrap;
@@ -15,6 +33,31 @@
     color: var(--keyboard-text);
     border: 1px solid var(--keyboard-border);
     border-radius: 4px;
+  }
+
+  .keyboard button:hover {
+    background-color: var(--primary-hover);
+    color: white;
+  }
+  .keyboard button:active {
+    background-color: var(--primary-color);
+    color: white;
+    animation: letterPress 0.2s ease;
+  }
+  .keyboard button.correct-guess {
+    animation: correctGuess 0.5s forwards;
+  }
+  .keyboard button.wrong-guess {
+    animation: wrongGuess 0.5s forwards;
+  }
+  .keyboard button:focus {
+    outline: none;
+    box-shadow: 0 0 5px var(--primary-color);
+  }
+  .keyboard button:disabled {
+    background-color: var(--keyboard-bg);
+    color: var(--keyboard-text);
+    border: 1px solid var(--keyboard-border);
   }
   
   .keyboard button:disabled {

@@ -1,5 +1,37 @@
+@keyframes revealLetter {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 .word-display {
     margin: 20px 0;
     font-size: 24px;
     letter-spacing: 5px;
-  }
+}
+
+.revealed-letter{
+  display: inline-block;
+  animation: revealLetter 0.3s ease-out;
+}
+
+.word-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  gap: 5px;
+}
+
+.letter-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 40px;
+  border-bottom: 2px solid var(--text-color);
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 5px;
+  transition: all 0.3s ease;
+}

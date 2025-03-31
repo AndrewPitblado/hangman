@@ -14,6 +14,12 @@ function Game() {
     gameOver: false,   // Is the game over?
     won: false         // Did the player win?
   });
+  
+  // Store the word globally so the Keyboard component can access it
+  // This is a quick hack - a better solution would be to pass correct/wrong guesses as props
+  useEffect(() => {
+    window.gameWord = gameState.word;
+  }, [gameState.word]);
 
   // Function to handle letter guesses
   const handleLetterGuess = (letter) => {
@@ -43,7 +49,7 @@ function Game() {
       .split('')
       .map(letter => newGuessedLetters.includes(letter) ? letter : '_')
       .join(' ');
-      
+
     setGameState({
       ...gameState,
       displayWord: newDisplayWord,
@@ -59,9 +65,17 @@ function Game() {
     // In real implementation, this would call your WebSocket service
     console.log('Starting new game');
     
+    // Add animation class to game container when restarting
+    const gameContainer = document.querySelector('.game-container');
+    if (gameContainer) {
+      gameContainer.classList.remove('fadeInUp');
+      void gameContainer.offsetWidth; // Trigger reflow to restart animation
+      gameContainer.classList.add('fadeInUp');
+    }
+    
     // Placeholder data (replace with WebSocket call)
     setGameState({
-      word: 'react',
+      word: 'apple',
       displayWord: '_ _ _ _ _',
       guessedLetters: [],
       attemptsLeft: 6,
@@ -77,7 +91,7 @@ function Game() {
 
   return (
     <div className="game-container">
-      <h1>Hangman Game</h1>
+      <h1 className="game-title">Hangman Game</h1>
       
       <Hangman attemptsLeft={gameState.attemptsLeft} />
       

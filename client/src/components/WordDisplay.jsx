@@ -1,9 +1,21 @@
 function WordDisplay({ displayWord }) {
-    return (
-      <div className="word-display">
-        <h2>{displayWord}</h2>
-      </div>
-    );
-  }
+  // Splitting the displayWord by spaces to get individual letters/blanks
+  const letters = displayWord.split(' ');
   
-  export default WordDisplay;
+  return (
+    <div className="word-display">
+      <div className="word-container">
+        {letters.map((letter, index) => (
+          <div 
+            key={index} 
+            className={`letter-box ${letter !== '_' ? 'revealed-letter' : ''}`}
+          >
+            {letter !== '_' ? letter : ''}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default WordDisplay;

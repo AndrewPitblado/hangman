@@ -2,32 +2,32 @@
     /* Light theme (default) */
     --bg-color: #f9f9f9;
     --text-color: #333333;
-    --primary-color: #4CAF50;
+    --primary-color: #2a44c6;
     --accent-color: #2196F3;
     --keyboard-bg: #f0f0f0;
     --keyboard-text: #333333;
     --keyboard-border: #dddddd;
-    --hangman-stand: #663300;
+    --hangman-stand: #2f2f2f;
     --hangman-body: #000000;
     --hangman-bg: #f5f5f5;
     --shadow-color: rgba(0, 0, 0, 0.1);
-    --primary-hover: #3a8a3d;
+    --primary-hover: #294c70;
   }
   
   /* Dark theme variables */
   .dark-theme {
     --bg-color: #121212;
     --text-color: #e0e0e0;
-    --primary-color: #8bc34a;
+    --primary-color: #2a3ac6;
     --accent-color: #64b5f6;
     --keyboard-bg: #333333;
     --keyboard-text: #ffffff;
     --keyboard-border: #555555;
-    --hangman-stand: #a67c52;
+    --hangman-stand: #a4a4a4;
     --hangman-body: #ffffff;
     --hangman-bg: #2a2a2a;
     --shadow-color: rgba(0, 0, 0, 0.3);
-    --primary-hover: #6a9a36;
+    --primary-hover: #1f3442;
   }
   
   .theme-toggle-container {
