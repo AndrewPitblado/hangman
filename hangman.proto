@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package hangman;
+
+// The Hangman service definition
+service HangmanService {
+  // A player joins the game
+  rpc JoinGame(PlayerRequest) returns (GameState);
+
+  // A player makes a guess
+  rpc GuessLetter(GuessRequest) returns (GameState);
+
+  // A player requests the current game state
+  rpc GetGameState(PlayerRequest) returns (GameState);
+
+  // A player leaves the game
+  rpc LeaveGame(PlayerRequest) returns (LeaveResponse);
+}
+
+// Message to identify the player
+message PlayerRequest {
+  string player_name = 1;
+}
+
+// Message to send a letter guess
+message GuessRequest {
+  string player_name = 1;
+  string letter = 2;
+}
+
+// Message representing the current state of the game
+message GameState {
+  string word_progress = 1;
+  int32 remaining_attempts = 2;
+  repeated string guessed_letters = 3;
+  bool is_game_over = 4;
+  string message = 5;
+}
+
+// Message for leave confirmation
+message LeaveResponse {
+  string message = 1;
+}
