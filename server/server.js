@@ -6,24 +6,50 @@ const cors = require('cors');
 const wordLists = require('./words');
 
 const app = express();
-const server = http.createServer(app);
-app.use(cors({
-    origin: ['https://classy-marshmallow-6be967.netlify.app', 'http://localhost:5173'],
-    credentials: true
-  }));
-const io = new Server(server, {
-  cors: {
-    origin: [     
-        "http://localhost:5173", // Dev server
-        "https://classy-marshmallow-6be967.netlify.app",
-        "https://hangman-production-53b3.up.railway.app"
-    ],
-    methods: ["GET", "POST"],
-    credentials: true,
-    allowedHeaders: ["Content-Type"],
-  }
-});
+app.use((req, res, next) => {
+    const allowedOrigins = [
+      'https://classy-marshmallow-6be967.netlify.app', 
+      'http://localhost:5173'
+    ];
+    const origin = req.headers.origin;
+    
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
+    
+    next();
+  });
 
+const server = http.createServer(app);
+
+// Socket.IO with more explicit CORS
+const io = new Server(server, {
+    cors: {
+      origin: (origin, callback) => {
+        const allowedOrigins = [
+          'https://classy-marshmallow-6be967.netlify.app',
+          'http://localhost:5173'
+        ];
+        
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
+      methods: ["GET", "POST"],
+      credentials: true,
+      allowedHeaders: ["Content-Type"]
+    }
+  });
 // Add route handlers
 app.get('/', (req, res) => {
     res.send('Hangman WebSocket Server is running!'); // Simple text response
