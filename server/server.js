@@ -18,7 +18,9 @@ const io = new Server(server, {
         "https://classy-marshmallow-6be967.netlify.app",
         "https://hangman-production-53b3.up.railway.app"
     ],
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST"],
+    credentials: true,
+    allowedHeaders: ["Content-Type"],
   }
 });
 
