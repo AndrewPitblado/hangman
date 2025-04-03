@@ -1,68 +1,73 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { io } from 'socket.io-client';
 import Hangman from './Hangman';
 import WordDisplay from './WordDisplay';
 import Keyboard from './Keyboard';
 import GameOverModal from './GameOverModal';
 
 function Game() {
-  // Game state
   const [gameState, setGameState] = useState({
-    word: '',          // Current word to guess (hidden)
-    displayWord: '',   // Word with blanks for display (e.g. "a _ _ l e")
+    word: '',          // This will now only be known when game is over
+    displayWord: '',   // Word with blanks as sent from server
     guessedLetters: [], // Letters already guessed
     attemptsLeft: 6,   // Number of attempts remaining
     gameOver: false,   // Is the game over?
-    won: false         // Did the player win?
+    won: false,        // Did the player win?
+    difficulty: 'medium' // Default difficulty
   });
   
-  // Store the word globally so the Keyboard component can access it
-  // This is a quick hack - a better solution would be to pass correct/wrong guesses as props
+  const socketRef = useRef(null);
+  const [connected, setConnected] = useState(false);
+
+  // Initialize socket connection
   useEffect(() => {
-    window.gameWord = gameState.word;
-  }, [gameState.word]);
-
-  // Function to handle letter guesses
-  const handleLetterGuess = (letter) => {
-    if (gameState.gameOver || gameState.guessedLetters.includes(letter)) {
-      return; // Do nothing if game is over or letter already guessed
-    }
+    // Connect to the WebSocket server
+    socketRef.current = io('http://localhost:3001');
     
-    // In a real implementation, this would call your WebSocket service
-    console.log(`Letter guessed: ${letter}`);
-    
-    // Placeholder logic for testing (replace with WebSocket calls later)
-    const newGuessedLetters = [...gameState.guessedLetters, letter];
-    let newAttemptsLeft = gameState.attemptsLeft;
-    
-    // Check if letter is in word (placeholder logic)
-    if (!gameState.word.includes(letter)) {
-      newAttemptsLeft -= 1;
-    }
-    
-    // Check for win condition - placeholder logic
-    let wordGuessed = false;
-    if (gameState.word) {
-      wordGuessed = [...gameState.word].every(letter => newGuessedLetters.includes(letter));
-    }
-    // Calculate the new display word
-    const newDisplayWord = gameState.word
-      .split('')
-      .map(letter => newGuessedLetters.includes(letter) ? letter : '_')
-      .join(' ');
-
-    setGameState({
-      ...gameState,
-      displayWord: newDisplayWord,
-      guessedLetters: newGuessedLetters,
-      attemptsLeft: newAttemptsLeft,
-      gameOver: newAttemptsLeft <= 0 || wordGuessed,
-      won: wordGuessed
+    // Handle connection events
+    socketRef.current.on('connect', () => {
+      console.log('Connected to server');
+      setConnected(true);
+      startNewGame();
     });
+    
+    // Handle game state updates from server
+    socketRef.current.on('gameState', (newState) => {
+      console.log('Received game state:', newState);
+      setGameState(prevState => ({
+        ...prevState,
+        ...newState
+      }));
+    });
+    
+    // Handle errors
+    socketRef.current.on('error', (error) => {
+      console.error('Socket error:', error);
+    });
+    
+    // Clean up on unmount
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, []);
+
+  // No longer need this global word hack
+  // useEffect(() => {
+  //   window.gameWord = gameState.word;
+  // }, [gameState.word]);
+
+  // Function to handle letter guesses - now sends to server
+  const handleLetterGuess = (letter) => {
+    if (gameState.gameOver || !connected || gameState.guessedLetters.includes(letter)) {
+      return;
+    }
+    
+    console.log(`Letter guessed: ${letter}`);
+    socketRef.current.emit('guessLetter', letter);
   };
 
-  // Start a new game
-  const startNewGame = () => {
-    // In real implementation, this would call your WebSocket service
+  // Start a new game - now requests from server
+  const startNewGame = (difficulty = 'medium') => {
     console.log('Starting new game');
     
     // Add animation class to game container when restarting
@@ -73,21 +78,10 @@ function Game() {
       gameContainer.classList.add('fadeInUp');
     }
     
-    // Placeholder data (replace with WebSocket call)
-    setGameState({
-      word: 'apple',
-      displayWord: '_ _ _ _ _',
-      guessedLetters: [],
-      attemptsLeft: 6,
-      gameOver: false,
-      won: false
-    });
+    if (connected) {
+      socketRef.current.emit('startGame', difficulty);
+    }
   };
-
-  // Initialize game on component mount
-  useEffect(() => {
-    startNewGame();
-  }, []);
 
   return (
     <div className="game-container">
@@ -99,18 +93,27 @@ function Game() {
         displayWord={gameState.displayWord} 
       />
       
+      <div className="difficulty-controls">
+        <button onClick={() => startNewGame('easy')}>Easy</button>
+        <button onClick={() => startNewGame('medium')}>Medium</button>
+        <button onClick={() => startNewGame('hard')}>Hard</button>
+        <button onClick={() => startNewGame('expert')}>Expert</button>
+      </div>
+      
       <Keyboard 
         guessedLetters={gameState.guessedLetters}
         onLetterClick={handleLetterGuess}
-        disabled={gameState.gameOver}
+        disabled={gameState.gameOver || !connected}
       />
       
       <GameOverModal
         isWon={gameState.won}
         word={gameState.word}
-        onPlayAgain={startNewGame}
+        onPlayAgain={() => startNewGame(gameState.difficulty)}
         isVisible={gameState.gameOver}
       />
+      
+      {!connected && <div className="connection-error">Connecting to server...</div>}
     </div>
   );
 }
