@@ -6,6 +6,10 @@ const wordLists = require('./words');
 
 const app = express();
 const server = http.createServer(app);
+app.use(cors({
+    origin: ['https://classy-marshmallow-6be967.netlify.app', 'http://localhost:5173'],
+    credentials: true
+  }));
 const io = new Server(server, {
   cors: {
     origin: [     
