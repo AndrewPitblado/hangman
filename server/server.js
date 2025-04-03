@@ -10,12 +10,22 @@ const io = new Server(server, {
   cors: {
     origin: [     
         "http://localhost:5173", // Dev server
-        "https://classy-marshmallow-6be967.netlify.app"
+        "https://classy-marshmallow-6be967.netlify.app",
+        "https://hangman-production-53b3.up.railway.app"
     ],
     methods: ["GET", "POST"]
   }
 });
 
+// Add route handlers
+app.get('/', (req, res) => {
+    res.send('Hangman WebSocket Server is running!'); // Simple text response
+  });
+  
+  // Health check endpoint for Railway
+  app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'healthy' });
+  });
 // Store active games
 const games = {};
 
