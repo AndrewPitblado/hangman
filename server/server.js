@@ -8,7 +8,7 @@ const wordLists = require('./words');
 const app = express();
 // Use the cors middleware
 const allowedOrigins = [
-  'https://classy-marshmallow-6be967.netlify.app',
+  'https://classy-marshmallow-6be967.netlify.app/',
   'http://localhost:5173'
 ];
 
