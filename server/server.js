@@ -6,59 +6,51 @@ const cors = require('cors');
 const wordLists = require('./words');
 
 const app = express();
-app.use((req, res, next) => {
-    const allowedOrigins = [
-      'https://classy-marshmallow-6be967.netlify.app', 
-      'http://localhost:5173'
-    ];
-    const origin = req.headers.origin;
-    
-    if (allowedOrigins.includes(origin)) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
+// Use the cors middleware
+const allowedOrigins = [
+  'https://classy-marshmallow-6be967.netlify.app',
+  'http://localhost:5173'
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
     }
-    
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    
-    if (req.method === 'OPTIONS') {
-      return res.sendStatus(200);
-    }
-    
-    next();
-  });
+  },
+  methods: ["GET", "POST"],
+  credentials: true,
+  allowedHeaders: ["Content-Type"]
+}));
 
 const server = http.createServer(app);
 
 // Socket.IO with more explicit CORS
 const io = new Server(server, {
-    cors: {
-      origin: (origin, callback) => {
-        const allowedOrigins = [
-          'https://classy-marshmallow-6be967.netlify.app',
-          'http://localhost:5173'
-        ];
-        
-        if (!origin || allowedOrigins.includes(origin)) {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed by CORS'));
-        }
-      },
-      methods: ["GET", "POST"],
-      credentials: true,
-      allowedHeaders: ["Content-Type"]
-    }
-  });
+  cors: {
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ["GET", "POST"],
+    credentials: true,
+    allowedHeaders: ["Content-Type"]
+  }
+});
 // Add route handlers
 app.get('/', (req, res) => {
-    res.send('Hangman WebSocket Server is running!'); // Simple text response
-  });
-  
-  // Health check endpoint for Railway
-  app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'healthy' });
-  });
+  res.send('Hangman WebSocket Server is running!'); // Simple text response
+});
+
+// Health check endpoint for Railway
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'healthy' });
+});
 // Store active games
 const games = {};
 
@@ -71,14 +63,14 @@ function getRandomWord(difficulty = 'medium') {
 // WebSocket connection handler
 io.on('connection', (socket) => {
   console.log('A user connected', socket.id);
-  
+
   // Handle new game request
   socket.on('startGame', (difficulty = 'medium') => {
     const gameId = `game-${socket.id}`;
     const word = getRandomWord(difficulty);
-    
+
     console.log(`New game started with word: ${word} (${difficulty} difficulty)`);
-    
+
     // Create game state
     games[gameId] = {
       word: word,
@@ -89,9 +81,9 @@ io.on('connection', (socket) => {
       won: false,
       difficulty: difficulty
     };
-    
+
     socket.gameId = gameId;
-    
+
     // Send initial game state (without revealing the actual word)
     socket.emit('gameState', {
       displayWord: games[gameId].displayWord,
@@ -102,7 +94,7 @@ io.on('connection', (socket) => {
       difficulty: difficulty
     });
   });
-  
+
   // Handle letter guess
   socket.on('guessLetter', (letter) => {
     const gameId = socket.gameId;
@@ -110,35 +102,35 @@ io.on('connection', (socket) => {
       socket.emit('error', { message: 'No active game found' });
       return;
     }
-    
+
     const game = games[gameId];
-    
+
     // Validate and sanitize the guess
     if (game.gameOver || !letter || game.guessedLetters.includes(letter)) {
       return;
     }
-    
+
     letter = letter.toLowerCase();
-    
+
     // Add letter to guessed letters
     game.guessedLetters.push(letter);
-    
+
     // Check if letter is in word
     if (!game.word.includes(letter)) {
       game.attemptsLeft -= 1;
     }
-    
+
     // Update display word
     game.displayWord = game.word
       .split('')
       .map(char => game.guessedLetters.includes(char) ? char : '_')
       .join(' ');
-    
+
     // Check win/lose condition
     const won = !game.displayWord.includes('_');
     game.gameOver = game.attemptsLeft <= 0 || won;
     game.won = won;
-    
+
     // Send updated game state
     socket.emit('gameState', {
       displayWord: game.displayWord,
@@ -149,7 +141,7 @@ io.on('connection', (socket) => {
       word: game.gameOver ? game.word : undefined // Only send word if game is over
     });
   });
-  
+
   // Handle disconnect
   socket.on('disconnect', () => {
     console.log('User disconnected', socket.id);
