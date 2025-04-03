@@ -10,7 +10,7 @@ This project implements a distributed Hangman game with a React front-end and Py
 ## Tech Stack
 
 -   **Frontend:**  React with Vite
--   **Backend:**  Python Flask with Socket.IO
+-   **Backend:**  Nodejs Socket.IO
 -   **Communication:**  WebSockets for real-time bidirectional communication
 
 ## Project Structure
