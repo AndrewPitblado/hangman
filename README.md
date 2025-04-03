@@ -79,7 +79,9 @@ python app.py
 - **Start the frontend development server**
 cd client
 npm run dev
-
+- **Start the NodeJS server**
+  cd server
+  node server.js
 # Contributing
 
 **Create a feature branch**
