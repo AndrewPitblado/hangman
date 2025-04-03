@@ -22,7 +22,7 @@ function Game() {
   // Initialize socket connection
   useEffect(() => {
     // Connect to the WebSocket server
-    socketRef.current = io('http://localhost:3001');
+    socketRef.current = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001');
     
     // Handle connection events
     socketRef.current.on('connect', () => {
