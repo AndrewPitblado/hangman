@@ -16,6 +16,8 @@ function Game() {
     difficulty: 'medium' // Default difficulty
   });
   
+  const [roomId, setRoomId] = useState('');
+  const [players, setPlayers] = useState([]);
   const socketRef = useRef(null);
   const [connected, setConnected] = useState(false);
 
@@ -48,6 +50,12 @@ function Game() {
     // Handle errors
     socketRef.current.on('error', (error) => {
       console.error('Socket error:', error);
+    });
+
+    // Listen for player list updates
+    socketRef.current.on('updatePlayerList', (data) => {
+      console.log('Updated player list:', data.players);
+      setPlayers(data.players);
     });
     
     // Clean up on unmount
@@ -83,14 +91,53 @@ function Game() {
       gameContainer.classList.add('fadeInUp');
     }
     
-    if (connected) {
-      socketRef.current.emit('startGame', difficulty);
+    if (connected && roomId) {
+      socketRef.current.emit('startGame', roomId, difficulty);
+    }
+  };
+
+  // Function to create a new room
+  const createRoom = () => {
+    if (socketRef.current) {
+      socketRef.current.emit('createRoom', ({ roomId }) => {
+        setRoomId(roomId);
+        console.log(`Room created with ID: ${roomId}`);
+      });
+    }
+  };
+
+  // Function to join an existing room
+  const joinRoom = (id) => {
+    if (socketRef.current) {
+      socketRef.current.emit('joinRoom', id, ({ success, message }) => {
+        if (success) {
+          setRoomId(id);
+          console.log(`Joined room with ID: ${id}`);
+        } else {
+          console.error(message);
+        }
+      });
     }
   };
 
   return (
     <div className="game-container">
       <h1 className="game-title">Hangman Game</h1>
+      
+      <div className="room-controls">
+        <button onClick={createRoom}>Create Room</button>
+        <input type="text" placeholder="Enter Room ID" value={roomId} onChange={(e) => setRoomId(e.target.value)} />
+        <button onClick={() => joinRoom(roomId)}>Join Room</button>
+      </div>
+
+      <div className="player-list">
+        <h2>Players in Room:</h2>
+        <ul>
+          {players.map(player => (
+            <li key={player}>{player}</li>
+          ))}
+        </ul>
+      </div>
       
       <Hangman attemptsLeft={gameState.attemptsLeft} />
       
