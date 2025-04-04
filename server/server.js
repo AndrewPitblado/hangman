@@ -65,12 +65,7 @@ app.get('/test-cors', (req, res) => {
     
     res.send('CORS test successful!');
   });
-  fetch('https://hangman-production-53b3.up.railway.app/test-cors', {
-    credentials: 'include'
-  })
-  .then(response => response.text())
-  .then(data => console.log(data))
-  .catch(error => console.error('Error:', error));
+  
 // Store active games
 const games = {};
 
