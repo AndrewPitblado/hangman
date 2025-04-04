@@ -22,7 +22,12 @@ function Game() {
   // Initialize socket connection
   useEffect(() => {
     // Connect to the WebSocket server
-    socketRef.current = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001');
+    socketRef.current = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001', {
+      path: '/socket', // Using a custom path
+      transports: ['websocket'], // Try forcing websocket transport
+      reconnection: true,
+      reconnectionAttempts: 5
+    });
     
     // Handle connection events
     socketRef.current.on('connect', () => {

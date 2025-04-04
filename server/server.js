@@ -29,19 +29,14 @@ const server = http.createServer(app);
 
 // Socket.IO with more explicit CORS
 const io = new Server(server, {
-  cors: {
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    methods: ["GET", "POST"],
-    credentials: true,
-    allowedHeaders: ["Content-Type"]
-  }
-});
+    path: '/socket',
+    cors: {
+      origin: ['https://classy-marshmallow-6be967.netlify.app', 'http://localhost:5173'],
+      methods: ["GET", "POST"],
+      credentials: true,
+      allowedHeaders: ["Content-Type"]
+    }
+  });
 // Add route handlers
 app.get('/', (req, res) => {
   res.send('Hangman WebSocket Server is running!'); // Simple text response
@@ -65,7 +60,7 @@ app.get('/test-cors', (req, res) => {
     
     res.send('CORS test successful!');
   });
-  
+
 // Store active games
 const games = {};
 
@@ -174,6 +169,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
