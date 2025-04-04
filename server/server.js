@@ -51,6 +51,26 @@ app.get('/', (req, res) => {
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'healthy' });
 });
+
+app.get('/test-cors', (req, res) => {
+    // Set headers manually
+    res.header('Access-Control-Allow-Origin', 'https://classy-marshmallow-6be967.netlify.app');
+    res.header('Access-Control-Allow-Methods', 'GET, POST');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
+    // Log request information
+    console.log('CORS test request received from origin:', req.headers.origin);
+    console.log('Response headers:', res.getHeaders());
+    
+    res.send('CORS test successful!');
+  });
+  fetch('https://hangman-production-53b3.up.railway.app/test-cors', {
+    credentials: 'include'
+  })
+  .then(response => response.text())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
 // Store active games
 const games = {};
 
