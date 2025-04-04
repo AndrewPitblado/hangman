@@ -161,33 +161,6 @@ io.on('connection', (socket) => {
       delete games[gameId];
     }
   });
-
-  // Handle room creation
-  socket.on('createRoom', (callback) => {
-    const roomId = `room-${socket.id}`;
-    rooms[roomId] = {
-      players: [socket.id],
-      gameState: null
-    };
-    socket.join(roomId);
-    callback({ roomId });
-
-    io.to(roomId).emit('updatePlayerList', { players: rooms[roomId].players });
-  });
-
-  // Handle joining a room
-  socket.on('joinRoom', (roomId, callback) => {
-    if (rooms[roomId]) {
-      rooms[roomId].players.push(socket.id);
-      socket.join(roomId);
-      callback({ success: true });
-
-      // Emit the updated list of players
-      io.to(roomId).emit('updatePlayerList', { players: rooms[roomId].players });
-    } else {
-      callback({ success: false, message: 'Room not found' });
-    }
-  });
 });
 
 // Serve static files in production
