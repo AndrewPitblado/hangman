@@ -31,6 +31,7 @@ hangman/
 │
 ├── server/                       # NodeJs WebSocket server
 │   ├── server.js                 # Main NodeJs server
+|   |__ words.js                  # List of hardcoded words for server
 │   └── requirements.txt          # Server dependencies
 </pre>
 ## Getting Started
