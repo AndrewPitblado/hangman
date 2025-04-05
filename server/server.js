@@ -66,13 +66,6 @@ app.get('/test-cors', (req, res) => {
     res.send('CORS test successful!');
   });
 
-  // Add this to your server.js to test server-to-client emits
-app.get('/test-emit/:socketId', (req, res) => {
-  const socketId = req.params.socketId;
-  
-  
-});
-
 // Store active games
 
 const games = new Map();
