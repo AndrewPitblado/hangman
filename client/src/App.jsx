@@ -33,16 +33,16 @@ function ThemedApp() {
   }, [isDarkMode]);
 
   return (
-    <>
+    <div className='app-wrapper'>
       <div className="theme-toggle-container">
-        <div className="theme-toggle">
-          <button onClick={toggleTheme}>
+        
+          <button className='theme-button' onClick={toggleTheme}>
             {isDarkMode ? '☀️ Light' : '🌙 Dark'}
           </button>
           <span className="theme-status">
             Using {isDarkMode ? 'dark' : 'light'} theme (auto-detected)
           </span>
-        </div>
+        
       </div>
       <div className={`App ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
         <Routes>
@@ -74,7 +74,7 @@ function ThemedApp() {
           <Route path="/multiplayer" element={<GameInterface onReturn={handleReturn} />} />
         </Routes>
       </div>
-    </>
+    </div>
   );
 }
 
