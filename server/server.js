@@ -69,19 +69,12 @@ app.get('/test-cors', (req, res) => {
   // Add this to your server.js to test server-to-client emits
 app.get('/test-emit/:socketId', (req, res) => {
   const socketId = req.params.socketId;
-  const socket = io.sockets.sockets.get(socketId);
+  
   
   if (!socket) {
     return res.status(404).json({ error: 'Socket not found' });
   }
   
-  // Try to emit a test event
-  try {
-    socket.emit('test', { message: 'This is a test from server' });
-    res.json({ success: true, message: 'Test emit sent' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
 });
 
 // Store active games
