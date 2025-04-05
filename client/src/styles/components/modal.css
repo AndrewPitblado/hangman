@@ -49,18 +49,38 @@
   animation: slideIn 0.3s ease-in-out;
 }
 
-.play-again-btn {
+.modal-content .button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+/* Override global button styles */
+
+/* Button styles */
+.play-again-btn, .menu-btn {
   padding: 10px 20px;
-  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  margin-top: 1rem;
+  margin: 1rem 0.5rem 0;
   transition: background-color 0.2s;
+}
+
+.play-again-btn {
+  background-color: var(--primary-color);
+}
+
+.menu-btn {
+  background-color: var(--secondary-color);
 }
 
 .play-again-btn:hover {
   background-color: var(--primary-hover);
+}
+
+.menu-btn:hover {
+  background-color: var(--secondary-hover);
 }

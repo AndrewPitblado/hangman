@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
+import {useNavigate} from 'react-router-dom';
+import '../styles/components/modal.css'; // Adjust the path to your CSS file
 
 function GameOverModal({ isWon, word, onPlayAgain, isVisible }) {
   const [isClosing, setIsClosing] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
+  const navigate = useNavigate();
   
   // Handle visibility changes
   useEffect(() => {
@@ -40,9 +43,14 @@ function GameOverModal({ isWon, word, onPlayAgain, isVisible }) {
           ? `Congratulations! You correctly guessed "${word}"` 
           : `The word was "${word}". Better luck next time!`}
         </p>
+        <div className='button-group'>
         <button className="play-again-btn" onClick={handlePlayAgain}>
           Play Again
         </button>
+        <button className="menu-btn" onClick={() => navigate('/')}>
+          Main Menu
+        </button>
+        </div>
       </div>
     </div>
   );

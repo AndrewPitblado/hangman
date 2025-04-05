@@ -474,7 +474,7 @@ const renderJoinGame = () => (
           </form>
         )}
 
-<div className="guessed-letters">
+        <div className="guessed-letters">
           <h3>Guessed Letters</h3>
           <div className="letters-container">
             {gameState?.guessedLetters?.map(letter => (
