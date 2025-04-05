@@ -71,10 +71,6 @@ app.get('/test-emit/:socketId', (req, res) => {
   const socketId = req.params.socketId;
   
   
-  if (!socket) {
-    return res.status(404).json({ error: 'Socket not found' });
-  }
-  
 });
 
 // Store active games
