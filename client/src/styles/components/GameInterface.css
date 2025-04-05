@@ -299,16 +299,35 @@
 /* Responsive adjustments to match single player responsiveness */
 @media (max-width: 768px) {
   .game-container {
-    padding: 15px;
-    width: 95%;
+    padding: 10px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
   }
   
   .word-display {
-    font-size: 2rem;
-    letter-spacing: 5px;
+    font-size: 1.8rem;
+    letter-spacing: 4px;
   }
   
   .game-id {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    padding: 10px;
+    letter-spacing: 2px;
+    margin: 10px 0;
+  }
+  
+  /* Adjust other container elements */
+  .players-panel, 
+  .host-controls {
+    padding: 15px;
+  }
+  
+  /* Fix form inputs that might overflow */
+  .form-group input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
   }
 }

@@ -84,3 +84,22 @@
 .menu-btn:hover {
   background-color: var(--secondary-hover);
 }
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 90%;
+    max-width: 90%;
+    padding: 1.5rem;
+    margin: 0 auto;
+  }
+  
+  .modal-content .button-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .play-again-btn, .menu-btn {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+}
