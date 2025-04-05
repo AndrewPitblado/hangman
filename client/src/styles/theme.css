@@ -36,25 +36,36 @@
   
   .theme-toggle-container {
     width: 100%;
-    padding: 20px 20px;
+    max-width: 800px;
+    padding: 1.5rem;
     box-sizing: border-box;
-  }
-  
-  .theme-toggle {
+    margin: 0 auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 10px;
     align-items: center;
     justify-content: center;
   }
   
-  .theme-toggle button {
+  
+  .theme-button {
     background-color: var(--accent-color);
     color: white;
     border: none;
-    padding: 8px 16px;
+    padding : 0.3rem 1rem;
     border-radius: 4px;
     cursor: pointer;
-    margin-right: 10px;
+    
+  }
+  .theme-button:hover {
+    background-color: var(--primary-hover);
+  }
+  .theme-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-color);
+  }
+  .theme-button:active {
+    transform: scale(0.95);
   }
   
   .theme-status {

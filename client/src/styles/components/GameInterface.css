@@ -131,6 +131,20 @@
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
+.players-list {
+  list-style:none;
+  padding: 0;
+  margin: 0;
+}
+.players-list li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 18px;
+  color: var(--text-color, black);
+}
+.players-list li:last-child {
+  border-bottom: none;
+}
 
 /* Better layout for the form and input fields */
 .form-group {
