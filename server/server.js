@@ -516,13 +516,13 @@ socket.on('rejoinGame', ({ gameId, username, isHost }) => {
     });
     
     // If game is in progress, send game state
-    if (game.status === 'playing' && game.game) {
+    if (game.status === 'playing' && game.gameState) {
       const gameData = {
-        displayWord: game.game.displayWord,
-        guessedLetters: game.game.guessedLetters,
-        attemptsLeft: game.game.attemptsLeft,
-        gameOver: game.game.gameOver,
-        won: game.game.won
+        displayWord: game.gameState.displayWord,
+        guessedLetters: game.gameState.guessedLetters,
+        attemptsLeft: game.gameState.attemptsLeft,
+        gameOver: game.gameState.gameOver,
+        won: game.gameState.won
       };
       
       // If host, include the word
