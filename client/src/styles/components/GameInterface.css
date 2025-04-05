@@ -1,0 +1,300 @@
+/* Make the multiplayer UI more consistent with the single player style */
+
+/* Make container width match single player */
+.game-container {
+  max-width: 1200px;
+  width: 100%;  /* Take full width like single player */
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+  background-color: var(--bg-color, white);
+  color: var(--text-color, black);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* Add animation like single player */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Style header like single player */
+.game-header {
+  position: relative;
+  padding: 10px 0;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.game-header h2 {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Add the underline animation from single player */
+.game-header h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--primary-color, #4a90e2);
+  transform: scaleX(0);
+  transform-origin: center;
+  animation: underlineExpand 0.8s 0.3s forwards;
+}
+
+@keyframes underlineExpand {
+  to { transform: scaleX(1); }
+}
+
+/* Make buttons consistent with single player */
+.button-primary {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: var(--primary-color, #4a90e2);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.button-secondary {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Make word display more prominent like single player */
+.word-display-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top:auto;
+  align-items: center;
+  padding: 5px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.word-display {
+  font-size: 2.5rem;
+  letter-spacing: 8px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+/* Improve the lobby layout to be more spacious */
+.game-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Better styling for the game ID display */
+.game-id {
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 15px;
+  border-radius: 8px;
+  letter-spacing: 4px;
+  text-align: center;
+  margin: 15px 0;
+  border: 2px dashed var(--primary-color, #4a90e2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Improve panel styling */
+.players-panel, .host-controls {
+  background: var(--bg-secondary, #f8f9fa);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Better layout for the form and input fields */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group input {
+  width: 90%;
+  align-items: center;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  background-color: var(--input-bg, white);
+  color: var(--text-color, black);
+}
+
+/* Better guessed letters display */
+.letters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 5px;
+}
+.attempts-counter{
+  padding: 3px;
+  margin: 0 5px;
+}
+
+.letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  border-radius: 50%;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+/* Make the menu buttons layout nicer */
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 300px;
+  margin: 20px auto;
+}
+
+.menu-buttons button {
+  width: 100%;
+  padding: 12px;
+}
+
+/* Improve the form actions layout */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* Match the game-over style from single player */
+.game-result {
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px 0;
+  animation: fadeInUp 0.5s ease;
+}
+
+/* Dark theme adjustments */
+.dark-theme .game-container {
+  background-color: var(--bg-color, #1a202c);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+/* Game lobby panels */
+.dark-theme .players-panel, 
+.dark-theme .host-controls {
+  background-color: var(--bg-secondary, #2d3748);
+  border: 1px solid #4a5568;
+  color: var(--text-color, #e2e8f0);
+}
+/* Game ID display in dark mode */
+.dark-theme .game-id {
+  background: linear-gradient(135deg, #2d3748, #1a202c);
+  border: 2px dashed var(--primary-color, #4a90e2);
+  color: var(--text-color, #e2e8f0);
+}
+
+/* Input fields in dark mode */
+.dark-theme .form-group input {
+  background-color: var(--bg-secondary, #2d3748);
+  border: 1px solid #4a5568;
+  color: var(--text-color, #e2e8f0);
+}
+
+/* Add dark mode support for the player list */
+.dark-theme .players-list li {
+  border-bottom: 1px solid #4a5568;
+}
+
+/* Help text in dark mode */
+.dark-theme .help-text {
+  color: #a0aec0;
+}
+
+/* Waiting message in dark mode */
+.dark-theme .waiting-message {
+  color: #a0aec0;
+}
+/* Share code text in dark mode */
+.dark-theme .share-code p {
+  color: var(--text-color, #e2e8f0);
+}
+
+/* Game header in dark mode */
+.dark-theme .game-header h2::after {
+  background-color: var(--primary-color, #4a90e2);
+}
+
+/* Fix for dark mode errors */
+.dark-theme .error-message {
+  background-color: rgba(231, 76, 60, 0.15);
+  color: #fb8181;
+}
+/* Word display container in dark mode */
+.dark-theme .word-display-container {
+  background-color: var(--bg-secondary, #2d3748);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .host-word {
+  color: #fb8181; /* Brighter red for dark mode */
+}
+
+/* Last guess text in dark mode */
+.dark-theme .last-guess {
+  color: #a0aec0;
+}
+/* Notification styling for dark mode */
+.dark-theme .notification {
+  background-color: rgba(74, 144, 226, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Connection status in dark mode */
+.dark-theme .connection-status {
+  background-color: var(--bg-secondary, #2d3748);
+  border: 1px solid #4a5568;
+}
+/* Responsive adjustments to match single player responsiveness */
+@media (max-width: 768px) {
+  .game-container {
+    padding: 15px;
+    width: 95%;
+  }
+  
+  .word-display {
+    font-size: 2rem;
+    letter-spacing: 5px;
+  }
+  
+  .game-id {
+    font-size: 1.5rem;
+  }
+}
