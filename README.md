@@ -20,19 +20,17 @@ hangman/
 │   ├── src/                      # React source code
 │   │   ├── components/           # UI components
 │   │   │   ├── Game.jsx          # Main game component
+|   |   |   |__ GameInterface.jsx #Client Interfacefor Multiplayer
 │   │   │   ├── Hangman.jsx       # Hangman drawing component
 │   │   │   ├── Keyboard.jsx      # Virtual keyboard component
 │   │   │   └── WordDisplay.jsx   # Displays current word state
 │   │   ├── services/
-│   │   │   └── socketService.js  # WebSocket connection management
+│   │   │   └── socket_Service.js  # WebSocket connection management
 │   │   └── App.jsx               # Main application component
 │   └── ...                       # Other Vite-generated files
 │
-├── server/                       # Python WebSocket server
-│   ├── app.py                    # Main server entry point
-│   ├── game_logic.py             # Game state and hangman logic
-│   ├── word_dictionary.py        # Word selection functionality
-│   ├── socket_handlers.py        # WebSocket event handlers
+├── server/                       # NodeJs WebSocket server
+│   ├── server.js                 # Main NodeJs server
 │   └── requirements.txt          # Server dependencies
 </pre>
 ## Getting Started
