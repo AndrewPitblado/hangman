@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { io } from 'socket.io-client';
+import { socket } from '../services/socket_service'; // Adjust import to your setup
 import Hangman from './Hangman';
 import WordDisplay from './WordDisplay';
 import Keyboard from './Keyboard';
@@ -16,28 +16,28 @@ function Game() {
     difficulty: 'medium' // Default difficulty
   });
   
-  const socketRef = useRef(null);
+  
   const [connected, setConnected] = useState(false);
 
   // Initialize socket connection
   useEffect(() => {
-    // Connect to the WebSocket server
-    socketRef.current = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001', {
-      path: '/socket', // Using a custom path
-      transports: ['websocket'], // Try forcing websocket transport
-      reconnection: true,
-      reconnectionAttempts: 5
-    });
+    // Use the shared socket
+    setConnected(socket.connected);
     
-    // Handle connection events
-    socketRef.current.on('connect', () => {
+    const handleConnect = () => {
       console.log('Connected to server');
       setConnected(true);
       startNewGame();
-    });
+    };
+
+    if (socket.connected) {
+      handleConnect();
+    }
+
+    socket.on('connect', handleConnect);
     
     // Handle game state updates from server
-    socketRef.current.on('gameState', (newState) => {
+    socket.on('gameState', (newState) => {
       console.log('Received game state:', newState);
       setGameState(prevState => ({
         ...prevState,
@@ -46,13 +46,15 @@ function Game() {
     });
     
     // Handle errors
-    socketRef.current.on('error', (error) => {
+    socket.on('error', (error) => {
       console.error('Socket error:', error);
     });
     
     // Clean up on unmount
     return () => {
-      socketRef.current.disconnect();
+      socket.off('connect', handleConnect);
+      socket.off('gameState');
+      socket.off('error');
     };
   }, []);
 
@@ -68,7 +70,7 @@ function Game() {
     }
     
     console.log(`Letter guessed: ${letter}`);
-    socketRef.current.emit('guessLetter', letter);
+    socket.emit('guessLetter', letter);
   };
 
   // Start a new game - now requests from server
@@ -84,7 +86,7 @@ function Game() {
     }
     
     if (connected) {
-      socketRef.current.emit('startGame', difficulty);
+      socket.emit('startGame', difficulty);
     }
   };
 
