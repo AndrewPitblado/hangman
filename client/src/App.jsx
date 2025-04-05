@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import {Routes, Route} from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Game from './components/Game';
 import GameInterface from './components/GameInterface';
 import { ThemeProvider, useTheme } from './styles/ThemeContext';
@@ -7,25 +9,24 @@ import { clearCurrentGame } from './services/socket_service'; // Adjust import t
 import './App.css';
 
 function App() {
-  const [gameMode, setGameMode] = useState('menu'); // 'menu', 'singleplayer', 'multiplayer'
-  
-  // Handle return to main menu
-  const handleReturn = () => {
-    clearCurrentGame();
-    setGameMode('menu');
-  };
-
   return (
     <ThemeProvider>
-      <ThemedApp gameMode={gameMode} setGameMode={setGameMode} handleReturn={handleReturn} />
+      <ThemedApp />
     </ThemeProvider>
   );
 }
 
 // Theme-aware wrapper component
-function ThemedApp({ gameMode, setGameMode, handleReturn }) {
+function ThemedApp() {
   const { isDarkMode, toggleTheme } = useTheme();
-  
+  const [gameMode, setGameMode] = useState('menu'); // 'menu', 'singleplayer', 'multiplayer'
+  const navigate = useNavigate();
+  // Handle return to main menu
+  const handleReturn = () => {
+    clearCurrentGame();
+    setGameMode('menu');
+    navigate('/');
+  };
   // Apply theme class to body
   useEffect(() => {
     document.body.classList.toggle('dark-theme', isDarkMode);
@@ -44,24 +45,34 @@ function ThemedApp({ gameMode, setGameMode, handleReturn }) {
         </div>
       </div>
       <div className={`App ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
-        {gameMode === 'menu' && (
-          <div className="game-menu">
-            <h1>Hangman</h1>
-            <h2>Choose Game Mode</h2>
-            <div className="menu-buttons">
-              <button onClick={() => setGameMode('singleplayer')}>Single Player</button>
-              <button onClick={() => setGameMode('multiplayer')}>Multiplayer</button>
+        <Routes>
+          <Route path="/" element={
+            <div className="game-menu">
+              <h1>Hangman</h1>
+              <h2>Choose Game Mode</h2>
+              <div className="menu-buttons">
+                <button 
+                className='menu-option-btn singleplayer-btn'
+                onClick={() => {
+                  setGameMode('singleplayer');
+                  navigate('/singleplayer');
+                }}>
+                  Single Player
+                </button>
+                <button 
+                className='menu-option-btn multiplayer-btn'
+                onClick={() => {
+                  setGameMode('multiplayer');
+                  navigate('/multiplayer');
+                }}>
+                  Multiplayer
+                </button>
+              </div>
             </div>
-          </div>
-        )}
-
-        {gameMode === 'singleplayer' && (
-          <Game onReturn={handleReturn} />
-        )}
-
-        {gameMode === 'multiplayer' && (
-          <GameInterface onReturn={handleReturn} />
-        )}
+          } />
+          <Route path="/singleplayer" element={<Game onReturn={handleReturn} />} />
+          <Route path="/multiplayer" element={<GameInterface onReturn={handleReturn} />} />
+        </Routes>
       </div>
     </>
   );

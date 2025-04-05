@@ -73,9 +73,12 @@ function Game() {
     socket.emit('guessLetter', letter);
   };
 
+  const [activeDifficulty, setActiveDifficulty] = useState('medium');
+
   // Start a new game - now requests from server
   const startNewGame = (difficulty = 'medium') => {
     console.log('Starting new game');
+    setActiveDifficulty(difficulty);
     
     // Add animation class to game container when restarting
     const gameContainer = document.querySelector('.game-container');
@@ -101,10 +104,26 @@ function Game() {
       />
       
       <div className="difficulty-controls">
-        <button onClick={() => startNewGame('easy')}>Easy</button>
-        <button onClick={() => startNewGame('medium')}>Medium</button>
-        <button onClick={() => startNewGame('hard')}>Hard</button>
-        <button onClick={() => startNewGame('expert')}>Expert</button>
+        <button 
+          className={`difficulty-easy ${activeDifficulty === 'easy' ? 'active' : ''}`}
+          onClick={() => startNewGame('easy')}>
+          Easy
+        </button>
+        <button 
+          className={`difficulty-medium ${activeDifficulty === 'medium' ? 'active' : ''}`}
+          onClick={() => startNewGame('medium')}>
+          Medium
+        </button>
+        <button 
+          className={`difficulty-hard ${activeDifficulty === 'hard' ? 'active' : ''}`}
+          onClick={() => startNewGame('hard')}>
+          Hard
+        </button>
+        <button 
+          className={`difficulty-expert ${activeDifficulty === 'expert' ? 'active' : ''}`}
+          onClick={() => startNewGame('expert')}>
+          Expert
+        </button>
       </div>
       
       <Keyboard 

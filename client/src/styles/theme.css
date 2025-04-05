@@ -3,6 +3,7 @@
     --bg-color: #f9f9f9;
     --text-color: #333333;
     --primary-color: #2a44c6;
+    --secondary-color: #4a90e2;
     --accent-color: #2196F3;
     --keyboard-bg: #f0f0f0;
     --keyboard-text: #333333;
@@ -12,6 +13,7 @@
     --hangman-bg: #f5f5f5;
     --shadow-color: rgba(0, 0, 0, 0.1);
     --primary-hover: #294c70;
+    --secondary-hover: #3a6bbf;
   }
   
   /* Dark theme variables */
@@ -19,6 +21,7 @@
     --bg-color: #121212;
     --text-color: #e0e0e0;
     --primary-color: #2a3ac6;
+    --secondary-color: #3a6bbf;
     --accent-color: #64b5f6;
     --keyboard-bg: #333333;
     --keyboard-text: #ffffff;
@@ -28,6 +31,7 @@
     --hangman-bg: #2a2a2a;
     --shadow-color: rgba(0, 0, 0, 0.3);
     --primary-hover: #1f3442;
+    --secondary-hover: #203f44;
   }
   
   .theme-toggle-container {
@@ -56,4 +60,19 @@
   .theme-status {
     font-size: 14px;
     opacity: 0.7;
+  }
+  .dark-theme .difficulty-easy {
+    filter: brightness(0.85);
+  }
+  
+  .dark-theme .difficulty-medium {
+    filter: brightness(0.85);
+  }
+  
+  .dark-theme .difficulty-hard {
+    filter: brightness(0.85);
+  }
+  
+  .dark-theme .difficulty-expert {
+    filter: brightness(0.85);
   }
