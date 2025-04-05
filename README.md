@@ -20,7 +20,7 @@ hangman/
 │   ├── src/                      # React source code
 │   │   ├── components/           # UI components
 │   │   │   ├── Game.jsx          # Main game component
-|   |   |   |__ GameInterface.jsx #Client Interfacefor Multiplayer
+|   |   |   |__ GameInterface.jsx # Client Interface for Multiplayer
 │   │   │   ├── Hangman.jsx       # Hangman drawing component
 │   │   │   ├── Keyboard.jsx      # Virtual keyboard component
 │   │   │   └── WordDisplay.jsx   # Displays current word state
