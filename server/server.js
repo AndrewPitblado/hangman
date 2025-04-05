@@ -529,7 +529,7 @@ socket.on('rejoinGame', ({ gameId, username, isHost }) => {
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/dist')));
   // Handle client-side routing
-  app.get('/(.*)', (req, res) => {
+  app.get('/{*foo}', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/dist/index.html'));
   });
 }
