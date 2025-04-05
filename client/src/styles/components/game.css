@@ -180,6 +180,32 @@
 }
 
  
-  @keyframes underlineExpand {
+@keyframes underlineExpand {
     to { transform: scaleX(1); }
+}
+
+@media (max-width: 768px) {
+  .game-container,
+  .App,
+  .game-menu {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 0;
   }
+  
+  .theme-toggle-container {
+    padding: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .difficulty-controls button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .menu-buttons {
+    max-width: 90%;
+  }
+}
