@@ -364,6 +364,13 @@ const renderJoinGame = () => (
           <div className="share-code">
             <p>Share this code with friends:</p>
             <div className="game-id">{gameData?.gameId}</div>
+            <button className='button-primary' onClick={() => {
+              navigator.clipboard.writeText(gameData?.gameId);
+              showNotification('Game ID copied to clipboard!');
+            }
+            }>
+              Copy Code
+            </button>
           </div>
         </div>
         
@@ -418,6 +425,9 @@ const renderJoinGame = () => (
       <div className="game-footer">
         <button className="button-secondary" onClick={leaveGame}>Leave Game</button>
       </div>
+      {notification && (
+        <div className="notification">{notification}</div>
+      )}
     </div>
   );
 
