@@ -3,7 +3,7 @@ import {Routes, Route} from 'react-router-dom';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Game from './components/Game';
 import GameInterface from './components/GameInterface';
-import ConnectionStatus from './styles/components/connectionStatus';
+import ConnectionStatus from './components/ConnectionStatus';
 import { ThemeProvider, useTheme } from './styles/ThemeContext';
 import { clearCurrentGame } from './services/socket_service'; // Adjust import to your setup
 
