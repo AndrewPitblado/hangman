@@ -1,0 +1,78 @@
+.connection-status {
+    margin: 15px 0;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: var(--bg-secondary, #f8f9fa);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .connection-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .connection-controls button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-color, #4a90e2);
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .connection-controls button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .connection-controls button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .status-connected {
+    color: #28a745;
+    font-weight: bold;
+  }
+  
+  .status-disconnected {
+    color: #dc3545;
+    font-weight: bold;
+  }
+  
+  .error-message {
+    margin-top: 10px;
+    padding: 8px;
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    border-radius: 4px;
+  }
+  
+  /* Dark theme support */
+  .dark-theme .connection-status {
+    background-color: var(--bg-secondary, #2d3748);
+    border: 1px solid #4a5568;
+    color: var(--text-color, #e2e8f0);
+  }
+  
+  .dark-theme .error-message {
+    background-color: rgba(231, 76, 60, 0.15);
+    color: #fb8181;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .connection-controls {
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .connection-controls button {
+      width: 100%;
+    }
+  }
