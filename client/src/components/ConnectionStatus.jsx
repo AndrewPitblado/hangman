@@ -2,7 +2,7 @@ import React from 'react';
 import { socket, forceReconnect, checkConnectionStatus, checkHeartbeat } from '../services/socket_service';
 import '../styles/components/connectionStatus.css';
 
-function ConnectionStatus({ showControls = true }) {
+function ConnectionStatus({ showControls = true, onGameStart = null, isSinglePlayer = false }) {
   const [error, setError] = React.useState('');
   const [isConnected, setIsConnected] = React.useState(socket.connected);
   
@@ -20,6 +20,12 @@ function ConnectionStatus({ showControls = true }) {
       socket.off('disconnect', handleDisconnect);
     };
   }, []);
+
+  const handleStartNewGame = () => {
+    if (onGameStart) {
+      onGameStart('medium');
+    }
+  };
 
   const status = isConnected ? 'Connected' : 'Disconnected';
   const statusClass = isConnected ? 'status-connected' : 'status-disconnected';
@@ -55,6 +61,16 @@ function ConnectionStatus({ showControls = true }) {
           >
             Test Heartbeat
           </button>
+          
+          {isSinglePlayer && onGameStart && (
+            <button 
+              className="start-game-btn" 
+              onClick={handleStartNewGame}
+              disabled={!isConnected}
+            >
+              Start New Game
+            </button>
+          )}
         </div>
       )}
       
