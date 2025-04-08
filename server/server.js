@@ -143,8 +143,9 @@ io.on('connection', (socket) => {
 
     console.log(`New game started with word: ${word} (${difficulty} difficulty)`);
 
-    // Create game state
-    games[gameId] = {
+    // Store in Map instead of object
+    games.set(gameId, {
+      type: 'singleplayer',
       word: word,
       displayWord: '_ '.repeat(word.length).trim(),
       guessedLetters: [],
@@ -152,18 +153,20 @@ io.on('connection', (socket) => {
       gameOver: false,
       won: false,
       difficulty: difficulty,
-      startTime: Date.now()
-    };
+      startTime: Date.now(),
+      lastActivity: Date.now()
+    });
 
     socket.gameId = gameId;
 
-    // Send initial game state (without revealing the actual word)
+    // Use .get() to retrieve the game
+    const game = games.get(gameId);
     socket.emit('gameState', {
-      displayWord: games[gameId].displayWord,
-      guessedLetters: games[gameId].guessedLetters,
-      attemptsLeft: games[gameId].attemptsLeft,
-      gameOver: games[gameId].gameOver,
-      won: games[gameId].won,
+      displayWord: game.displayWord,
+      guessedLetters: game.guessedLetters,
+      attemptsLeft: game.attemptsLeft,
+      gameOver: game.gameOver,
+      won: game.won,
       difficulty: difficulty
     });
   });
@@ -171,18 +174,19 @@ io.on('connection', (socket) => {
   // Handle letter guess
   socket.on('guessLetter', (letter) => {
     const gameId = socket.gameId;
-    if (!gameId || !games[gameId]) {
+    // Use Map's has() method to check for both game types
+    if (!gameId || !games.has(gameId)) {
       socket.emit('error', { message: 'No active game found' });
       return;
     }
 
-    const game = games[gameId];
+    const game = games.get(gameId);
 
-    // Validate and sanitize the guess
-    if (game.gameOver || !letter || game.guessedLetters.includes(letter)) {
-      return;
-    }
-
+    if (game.type === 'singleplayer') { 
+       // Validate and sanitize the guess
+      if (game.gameOver || !letter || game.guessedLetters.includes(letter)) {
+        return;
+      }
     letter = letter.toLowerCase();
 
     // Add letter to guessed letters
@@ -211,9 +215,68 @@ io.on('connection', (socket) => {
       attemptsLeft: game.attemptsLeft,
       gameOver: game.gameOver,
       won: game.won,
-      word: game.gameOver ? game.word : undefined // Only send word is over
+      word: game.gameOver ? game.word : undefined, // Only send word is over
+      difficulty: game.difficulty
     });
-  });
+  }
+  else {
+    // Check if gameState exists
+    if (!game.gameState) {
+      socket.emit('error', { message: 'Game has not started yet' });
+      return;
+    }
+
+    // Prevent host from guessing 
+    if(game.host.id === socket.id) {
+        socket.emit('error', { message: 'Host cannot guess letters' });
+        return;
+    }
+
+    // Validate and sanitize the guess
+    if (game.gameState.gameOver || !letter || game.gameState.guessedLetters.includes(letter)) {
+        return;
+    }
+
+    letter = letter.toLowerCase();
+
+    // Who guessed the letter
+    const guesser = game.players.find(player => player.id === socket.id);
+
+    // Add letter to guessed letters 
+    game.gameState.guessedLetters.push(letter);
+
+    // Check if letter is in word
+    if (!game.gameState.word.includes(letter)) {
+        game.gameState.attemptsLeft -= 1;
+    }
+    
+    // Update display word
+    game.gameState.displayWord = game.gameState.word
+        .split('')
+        .map(char => game.gameState.guessedLetters.includes(char) ? char : '_')
+        .join(' ');
+        
+    // Check win/lose condition
+    const won = !game.gameState.displayWord.includes('_');
+    game.gameState.gameOver = game.gameState.attemptsLeft <= 0 || won;
+    game.gameState.won = won;
+
+    if(game.gameState.gameOver) {
+        game.status = 'finished';
+    }
+
+    // Broadcast the updated game state to all players - lowercase 'g' in gameStateUpdate to match client
+    io.to(gameId).emit('gameStateUpdate', {
+        displayWord: game.gameState.displayWord,
+        guessedLetters: game.gameState.guessedLetters,
+        attemptsLeft: game.gameState.attemptsLeft,
+        gameOver: game.gameState.gameOver,
+        won: game.gameState.won,
+        word: game.gameState.gameOver ? game.gameState.word : undefined,
+        guesser: guesser.username
+    });
+  }
+});
 
   // MULTIPLATER FUNCTIONALITY
 
@@ -291,6 +354,12 @@ socket.on('disconnect', () => {
     const gameId = socket.gameId;
     if (gameId && games.has(gameId)) {
       const game = games.get(gameId);
+      if (game.type === 'singleplayer') {
+        games.delete(gameId);
+        console.log(`Game ${gameId} deleted - singleplayer`);
+      }
+      else if (game.players){
+
       
       // Remove player from room
       const playerIndex = game.players.findIndex(p => p.id === socket.id);
@@ -313,6 +382,11 @@ socket.on('disconnect', () => {
           io.to(gameId).emit('playerLeft', socket.id);
         }
       }
+    }
+    else {
+      games.delete(gameId);
+      console.log(`Game ${gameId} deleted - no players left`);
+    }
     }
   });
 
@@ -368,73 +442,19 @@ socket.on('disconnect', () => {
     });
 
       
-    // Handle letter guess in room
-// Handle letter guess in room
-socket.on('guessLetter', (letter) => {
-  const gameId = socket.gameId;
-  if (!gameId || !games.has(gameId)) {
-    socket.emit('error', { message: 'No active game found' });
-    return;
-  }
+//     // Handle letter guess in room
+// // Handle letter guess in room
+// socket.on('guessLetter', (letter) => {
+//   const gameId = socket.gameId;
+//   if (!gameId || !games.has(gameId)) {
+//     socket.emit('error', { message: 'No active game found' });
+//     return;
+//   }
 
-  const game = games.get(gameId);
+//   const game = games.get(gameId);
   
-  // Check if gameState exists
-  if (!game.gameState) {
-    socket.emit('error', { message: 'Game has not started yet' });
-    return;
-  }
-
-  // Prevent host from guessing 
-  if(game.host.id === socket.id) {
-      socket.emit('error', { message: 'Host cannot guess letters' });
-      return;
-  }
-
-  // Validate and sanitize the guess
-  if (game.gameState.gameOver || !letter || game.gameState.guessedLetters.includes(letter)) {
-      return;
-  }
-
-  letter = letter.toLowerCase();
-
-  // Who guessed the letter
-  const guesser = game.players.find(player => player.id === socket.id);
-
-  // Add letter to guessed letters 
-  game.gameState.guessedLetters.push(letter);
-
-  // Check if letter is in word
-  if (!game.gameState.word.includes(letter)) {
-      game.gameState.attemptsLeft -= 1;
-  }
   
-  // Update display word
-  game.gameState.displayWord = game.gameState.word
-      .split('')
-      .map(char => game.gameState.guessedLetters.includes(char) ? char : '_')
-      .join(' ');
-      
-  // Check win/lose condition
-  const won = !game.gameState.displayWord.includes('_');
-  game.gameState.gameOver = game.gameState.attemptsLeft <= 0 || won;
-  game.gameState.won = won;
-
-  if(game.gameState.gameOver) {
-      game.status = 'finished';
-  }
-
-  // Broadcast the updated game state to all players - lowercase 'g' in gameStateUpdate to match client
-  io.to(gameId).emit('gameStateUpdate', {
-      displayWord: game.gameState.displayWord,
-      guessedLetters: game.gameState.guessedLetters,
-      attemptsLeft: game.gameState.attemptsLeft,
-      gameOver: game.gameState.gameOver,
-      won: game.gameState.won,
-      word: game.gameState.gameOver ? game.gameState.word : undefined,
-      guesser: guesser.username
-  });
-});
+// });
 
     // Play again (host only)
     socket.on('playAgain', () => {
@@ -470,6 +490,11 @@ socket.on('rejoinGame', ({ gameId, username, isHost }) => {
     }
     
     const game = games.get(gameId);
+
+    if(!game.players) {
+        socket.emit('error', { message: 'No players in game' });
+        return;
+    }
     
     // Remove old socket instances for this user if any
     const existingPlayerIndex = game.players.findIndex(p => p.username === username);

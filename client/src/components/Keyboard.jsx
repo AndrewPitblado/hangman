@@ -1,13 +1,13 @@
-function Keyboard({ guessedLetters, onLetterClick, disabled }) {
+function Keyboard({ guessedLetters, onLetterClick, disabled, gameState }) {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
   
   // This will be passed from Game.jsx
   const correctGuesses = alphabet.filter(letter => 
-    guessedLetters.includes(letter) && window.gameWord?.includes(letter)
+    guessedLetters.includes(letter) && (gameState?.displayWord?.includes(letter) || gameState?.word?.includes(letter))
   );
   
   const wrongGuesses = alphabet.filter(letter => 
-    guessedLetters.includes(letter) && (!window.gameWord?.includes(letter))
+    guessedLetters.includes(letter) && !(gameState?.displayWord?.includes(letter) || gameState?.word?.includes(letter))
   );
   
   return (
