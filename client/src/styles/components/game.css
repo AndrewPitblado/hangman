@@ -282,6 +282,77 @@
   pointer-events: none;
 }
 
+.game-main-content {
+  display: flex;
+  justify-content: end;
+  gap: 25px;
+  
+ 
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+
+
+.guessed-letters-container {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 15px;
+  
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  
+}
+.box-style{
+  margin: 50px;
+  transform: translateY(-25px);
+  max-width: 150px;
+}
+.line-style{
+  margin: 20px auto;
+  max-width: 80%;;
+}
+.guessed-letters-container h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: var(--text-color);
+  text-align: center;
+}
+.guessed-letters-grid {
+  display: flex;
+  flex-direction: column;
+  
+  gap: 8px;
+}
+
+.guessed-letters-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.guessed-letter-line{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.guessed-letter {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
+
+.no-guesses {
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
+
 @keyframes notificationAppear {
   0% {
     opacity: 0;
@@ -325,8 +396,22 @@
     padding: 6px 12px;
     font-size: 0.9rem;
   }
+  .desktop-guessed-letters {
+    display: none;
+  }
+  .game-main-content{
+    justify-content: center;
+  }
+  .mobile-guessed-letters{
+    width: 100%;
+  }
   
   .menu-buttons {
     max-width: 90%;
+  }
+}
+@media(min-width: 769px) {
+  .mobile-guessed-letters {
+    display: none;
   }
 }

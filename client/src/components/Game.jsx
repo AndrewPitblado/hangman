@@ -5,6 +5,7 @@ import WordDisplay from './WordDisplay';
 import Keyboard from './Keyboard';
 import GameOverModal from './GameOverModal';
 import ConnectionStatus from './ConnectionStatus';
+import GuessedLetters from './GuessedLetters';
 
 function Game({onReturn}) {
   const [gameState, setGameState] = useState({
@@ -178,11 +179,27 @@ function Game({onReturn}) {
       ) : (
         <>
            {gameStarted && (
-            <>
-              <Hangman attemptsLeft={gameState.attemptsLeft} />
-              <WordDisplay displayWord={gameState.displayWord} />
-            </>
-           )}
+              <>
+                <div className='game-main-content'>
+                  <Hangman attemptsLeft={gameState.attemptsLeft} />
+                  {/* Box style for desktop */}
+                  <GuessedLetters 
+                    guessedLetters={gameState.guessedLetters} 
+                    className="desktop-guessed-letters"
+                    displayStyle="box"
+                  />
+                </div>
+                <WordDisplay displayWord={gameState.displayWord} />
+                {/* Line style for mobile */}
+                {gameStarted && (
+                  <GuessedLetters
+                    guessedLetters={gameState.guessedLetters}
+                    className="mobile-guessed-letters"
+                    displayStyle="line"
+                  />
+                )}
+              </>
+            )}
         </>
       )}
       
