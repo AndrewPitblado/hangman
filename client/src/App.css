@@ -21,6 +21,17 @@ body{
     overflow-x: hidden;
 }
 
+.game-menu .connection-status {
+    max-width: 500px;
+    margin: 15px auto;
+  }
+  
+  @media (max-width: 768px) {
+    .game-menu .connection-status {
+      width: 90%;
+    }
+  }
+
 @media (max-width: 768px) {
     .app-wrapper{
         padding: 0 5px;

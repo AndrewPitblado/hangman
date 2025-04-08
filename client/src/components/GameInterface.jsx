@@ -9,6 +9,7 @@ import {
 } from '../services/socket_service';
 import Hangman from './Hangman';
 import '../styles/components/GameInterface.css';
+import ConnectionStatus from './ConnectionStatus';
  // Adjust import to your setup
 
 function GameInterface({ onReturn }) {
@@ -227,43 +228,43 @@ const checkSocketStatus = () => {
     setGameState(null);
   };
 
-  const renderConnectionStatus = () => {
-    const status = socket.connected ? 'Connected' : 'Disconnected';
-    const statusClass = socket.connected ? 'status-connected' : 'status-disconnected';
+//   const renderConnectionStatus = () => {
+//     const status = socket.connected ? 'Connected' : 'Disconnected';
+//     const statusClass = socket.connected ? 'status-connected' : 'status-disconnected';
     
-    return (
-      <div className="connection-status">
-        <p className={statusClass}>
-          Status: {status}
-          {socket.connected && ` (${socket.io.engine.transport.name})`}
-        </p>
-        <div className="connection-controls">
-          <button onClick={checkConnectionStatus}>
-            Check Connection
-          </button>
-          <button 
-            onClick={() => {
-              forceReconnect();
-              setError('Reconnecting to server...');
-              setTimeout(() => setError(''), 2000);
-            }}
-            disabled={socket.connected}
-          >
-            Force Reconnect
-          </button>
-          <button 
-          onClick={async () => {
-            const result = await checkHeartbeat();
-            setError(`Heartbeat test: ${result.message}`);
-            setTimeout(() => setError(''), 3000);
-          }}
-        >
-          Test Heartbeat
-        </button>
-      </div>
-    </div>
-  );
-};
+//     return (
+//       <div className="connection-status">
+//         <p className={statusClass}>
+//           Status: {status}
+//           {socket.connected && ` (${socket.io.engine.transport.name})`}
+//         </p>
+//         <div className="connection-controls">
+//           <button onClick={checkConnectionStatus}>
+//             Check Connection
+//           </button>
+//           <button 
+//             onClick={() => {
+//               forceReconnect();
+//               setError('Reconnecting to server...');
+//               setTimeout(() => setError(''), 2000);
+//             }}
+//             disabled={socket.connected}
+//           >
+//             Force Reconnect
+//           </button>
+//           <button 
+//           onClick={async () => {
+//             const result = await checkHeartbeat();
+//             setError(`Heartbeat test: ${result.message}`);
+//             setTimeout(() => setError(''), 3000);
+//           }}
+//         >
+//           Test Heartbeat
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
 
 const renderMenu = () => (
   <div className="game-container">
@@ -271,7 +272,7 @@ const renderMenu = () => (
       <h2>Multiplayer Hangman</h2>
     </div>
     
-    {renderConnectionStatus()}
+    <ConnectionStatus/>
     
     <div className="menu-buttons">
       <button className="button-primary" onClick={() => setView('create')}>Create Game</button>

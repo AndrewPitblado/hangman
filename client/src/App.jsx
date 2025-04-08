@@ -3,6 +3,7 @@ import {Routes, Route} from 'react-router-dom';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Game from './components/Game';
 import GameInterface from './components/GameInterface';
+import ConnectionStatus from './components/ConnectionStatus';
 import { ThemeProvider, useTheme } from './styles/ThemeContext';
 import { clearCurrentGame } from './services/socket_service'; // Adjust import to your setup
 
@@ -50,6 +51,7 @@ function ThemedApp() {
             <div className="game-menu">
               <h1>Hangman</h1>
               <h2>Choose Game Mode</h2>
+              <ConnectionStatus />
               <div className="menu-buttons">
                 <button 
                 className='menu-option-btn singleplayer-btn'
