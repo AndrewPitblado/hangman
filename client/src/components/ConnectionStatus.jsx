@@ -1,6 +1,6 @@
 import React from 'react';
 import { socket, forceReconnect, checkConnectionStatus, checkHeartbeat } from '../services/socket_service';
-import '../styles/components/ConnectionStatus.css';
+import '../styles/components/connectionStatus.css';
 
 function ConnectionStatus({ showControls = true }) {
   const [error, setError] = React.useState('');

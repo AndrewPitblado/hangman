@@ -9,7 +9,7 @@ import {
 } from '../services/socket_service';
 import Hangman from './Hangman';
 import '../styles/components/GameInterface.css';
-import ConnectionStatus from './ConnectionStatus';
+import ConnectionStatus from './connectionStatus';
  // Adjust import to your setup
 
 function GameInterface({ onReturn }) {
