@@ -1,11 +1,11 @@
 # HangMan Project
 
-This is a real-time multiplayer Hangman game built with React (Vite) and Python WebSockets.
+This is a real-time multiplayer Hangman game built with React (Vite) and WebSockets (NodeJs).
 
 
 # Project Overview
 
-This project implements a distributed Hangman game with a React front-end and Python WebSocket back-end. Players can start games, guess letters, and see real-time updates of their progress.
+This project implements a distributed Hangman game with a React front-end and WebSocket back-end (NodeJs). Players can start games, guess letters, and see real-time updates of their progress.
 
 ## Tech Stack
 
