@@ -61,7 +61,8 @@
   }
   
   .welcome-message h2 {
-    color: var(--primary-color, #4a90e2);
+    color: var(--accent-color, #007bff);
+    font-size: 24px;
     margin-bottom: 15px;
   }
   
@@ -69,6 +70,13 @@
     font-size: 18px;
     line-height: 1.5;
   }
+
+  .dark-theme .welcome-message {
+    background-color: var(--bg-secondary, #2d3748);
+    border: 1px solid #4a5568;
+    color: var(--text-color, #e2e8f0);
+  }   
+  
 
   
   .difficulty-controls{
